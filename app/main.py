@@ -14,6 +14,15 @@ from app.schemas.token import TokenResponse
 from app.schemas.user import UserCreate, UserResponse, UserLogin
 from app.database import Base, get_db, engine
 
+from fastapi import Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "..", "templates"))
+
+
 # Create tables on startup
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,6 +44,14 @@ app = FastAPI(
 @app.get("/health", tags=["health"])
 def read_health():
     return {"status": "ok"}
+
+# ------------------------------------------------------------------------------
+# Serve Frontend
+# ------------------------------------------------------------------------------
+@app.get("/", response_class=HTMLResponse, tags=["frontend"])
+def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
 
 # ------------------------------------------------------------------------------
 # User Registration Endpoint
@@ -235,4 +252,4 @@ def delete_calculation(
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host="127.0.0.1", port=8001, log_level="info")
+    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, log_level="info")

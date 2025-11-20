@@ -265,10 +265,12 @@
                     - body: JSON.stringify({ a: a, b: b }): Converts the JavaScript object { a: a, b: b } into a JSON string
                       to be sent in the request body.
                 */
-                const response = await fetch('/' + operation, {
+                const response = await fetch('/calculations', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ a: a, b: b })
+                    body: JSON.stringify({ type: operation,
+                                           inputs: [a,b]
+                     })
                 });
                 
                 // Await and parse the response as JSON
@@ -297,7 +299,7 @@
                           
                         - resultElement.innerText: Updates the text inside the result <div> to display the error message.
                     */
-                    resultElement.innerText = 'Error: ' + data.error;
+                    resultElement.innerText = 'Error: ' + 'Error: ' + (data.detail || 'Unknown error');
                 }
             } catch (error) {
                 /*

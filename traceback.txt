@@ -1,0 +1,925 @@
+(venv) Mac:assignment12 danatryon$ pip install bcrypt
+Collecting bcrypt
+  Downloading bcrypt-5.0.0-cp39-abi3-macosx_10_12_universal2.whl.metadata (10 kB)
+Downloading bcrypt-5.0.0-cp39-abi3-macosx_10_12_universal2.whl (495 kB)
+Installing collected packages: bcrypt
+Successfully installed bcrypt-5.0.0
+(venv) Mac:assignment12 danatryon$ pytest
+=================================================== test session starts ====================================================
+platform darwin -- Python 3.11.9, pytest-8.3.4, pluggy-1.5.0
+rootdir: /Users/danatryon/projects/assignment12
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-6.0.0, Faker-36.1.0, anyio-4.8.0
+collected 100 items                                                                                                        
+
+tests/e2e/test_fastapi_calculator.py .FFFFFFF....                                                                    [ 12%]
+tests/integration/test_calculation.py .............                                                                  [ 25%]
+tests/integration/test_calculation_schema.py ........                                                                [ 33%]
+tests/integration/test_database.py ....                                                                              [ 37%]
+tests/integration/test_dependencies.py .....                                                                         [ 42%]
+tests/integration/test_schema_base.py ............                                                                   [ 54%]
+tests/integration/test_user.py ........s....                                                                         [ 67%]
+tests/integration/test_user_auth.py FFFFFF..FF..                                                                     [ 79%]
+tests/unit/test_calculator.py .....................                                                                  [100%]
+
+========================================================= FAILURES =========================================================
+__________________________________________________ test_user_registration __________________________________________________
+
+base_url = 'http://127.0.0.1:62255'
+
+    def test_user_registration(base_url: str):
+        url = f"{base_url}/auth/register"
+        payload = {
+            "first_name": "Alice",
+            "last_name": "Smith",
+            "email": "alice.smith@example.com",
+            "username": "alicesmith",
+            "password": "SecurePass123!",
+            "confirm_password": "SecurePass123!"
+        }
+        response = requests.post(url, json=payload)
+>       assert response.status_code == 201, f"Expected 201 but got {response.status_code}. Response: {response.text}"
+E       AssertionError: Expected 201 but got 400. Response: {"detail":"password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])"}
+E       assert 400 == 201
+E        +  where 400 = <Response [400]>.status_code
+
+tests/e2e/test_fastapi_calculator.py:63: AssertionError
+_____________________________________________________ test_user_login ______________________________________________________
+
+base_url = 'http://127.0.0.1:62255'
+
+    def test_user_login(base_url: str):
+        reg_url = f"{base_url}/auth/register"
+        login_url = f"{base_url}/auth/login"
+    
+        test_user = {
+            "first_name": "Bob",
+            "last_name": "Jones",
+            "email": "bob.jones@example.com",
+            "username": "bobjones",
+            "password": "SecurePass123!",
+            "confirm_password": "SecurePass123!"
+        }
+    
+        # Register user
+        reg_response = requests.post(reg_url, json=test_user)
+>       assert reg_response.status_code == 201, f"User registration failed: {reg_response.text}"
+E       AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])"}
+E       assert 400 == 201
+E        +  where 400 = <Response [400]>.status_code
+
+tests/e2e/test_fastapi_calculator.py:89: AssertionError
+_____________________________________________ test_create_calculation_addition _____________________________________________
+
+base_url = 'http://127.0.0.1:62255'
+
+    def test_create_calculation_addition(base_url: str):
+        user_data = {
+            "first_name": "Calc",
+            "last_name": "Adder",
+            "email": f"calc.adder{uuid4()}@example.com",
+            "username": f"calc_adder_{uuid4()}",
+            "password": "SecurePass123!",
+            "confirm_password": "SecurePass123!"
+        }
+>       token_data = register_and_login(base_url, user_data)
+
+tests/e2e/test_fastapi_calculator.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+base_url = 'http://127.0.0.1:62255'
+user_data = {'confirm_password': 'SecurePass123!', 'email': 'calc.adder8299f1c7-62e0-4093-ac9d-f945b3e70520@example.com', 'first_name': 'Calc', 'last_name': 'Adder', ...}
+
+    def register_and_login(base_url: str, user_data: dict) -> dict:
+        """
+        Registers a new user and logs in, returning the token response data.
+        """
+        reg_url = f"{base_url}/auth/register"
+        login_url = f"{base_url}/auth/login"
+    
+        reg_response = requests.post(reg_url, json=user_data)
+>       assert reg_response.status_code == 201, f"User registration failed: {reg_response.text}"
+E       AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])"}
+E       assert 400 == 201
+E        +  where 400 = <Response [400]>.status_code
+
+tests/e2e/test_fastapi_calculator.py:33: AssertionError
+___________________________________________ test_create_calculation_subtraction ____________________________________________
+
+base_url = 'http://127.0.0.1:62255'
+
+    def test_create_calculation_subtraction(base_url: str):
+        user_data = {
+            "first_name": "Calc",
+            "last_name": "Subtractor",
+            "email": f"calc.sub{uuid4()}@example.com",
+            "username": f"calc_sub_{uuid4()}",
+            "password": "SecurePass123!",
+            "confirm_password": "SecurePass123!"
+        }
+>       token_data = register_and_login(base_url, user_data)
+
+tests/e2e/test_fastapi_calculator.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+base_url = 'http://127.0.0.1:62255'
+user_data = {'confirm_password': 'SecurePass123!', 'email': 'calc.subf6ba4ad5-1436-4da3-88c1-1fe5df5ec6cb@example.com', 'first_name': 'Calc', 'last_name': 'Subtractor', ...}
+
+    def register_and_login(base_url: str, user_data: dict) -> dict:
+        """
+        Registers a new user and logs in, returning the token response data.
+        """
+        reg_url = f"{base_url}/auth/register"
+        login_url = f"{base_url}/auth/login"
+    
+        reg_response = requests.post(reg_url, json=user_data)
+>       assert reg_response.status_code == 201, f"User registration failed: {reg_response.text}"
+E       AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])"}
+E       assert 400 == 201
+E        +  where 400 = <Response [400]>.status_code
+
+tests/e2e/test_fastapi_calculator.py:33: AssertionError
+__________________________________________ test_create_calculation_multiplication __________________________________________
+
+base_url = 'http://127.0.0.1:62255'
+
+    def test_create_calculation_multiplication(base_url: str):
+        user_data = {
+            "first_name": "Calc",
+            "last_name": "Multiplier",
+            "email": f"calc.mult{uuid4()}@example.com",
+            "username": f"calc_mult_{uuid4()}",
+            "password": "SecurePass123!",
+            "confirm_password": "SecurePass123!"
+        }
+>       token_data = register_and_login(base_url, user_data)
+
+tests/e2e/test_fastapi_calculator.py:193: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+base_url = 'http://127.0.0.1:62255'
+user_data = {'confirm_password': 'SecurePass123!', 'email': 'calc.mult2ddbdf68-32ed-4dd9-b4bc-b90f4dc81a0b@example.com', 'first_name': 'Calc', 'last_name': 'Multiplier', ...}
+
+    def register_and_login(base_url: str, user_data: dict) -> dict:
+        """
+        Registers a new user and logs in, returning the token response data.
+        """
+        reg_url = f"{base_url}/auth/register"
+        login_url = f"{base_url}/auth/login"
+    
+        reg_response = requests.post(reg_url, json=user_data)
+>       assert reg_response.status_code == 201, f"User registration failed: {reg_response.text}"
+E       AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])"}
+E       assert 400 == 201
+E        +  where 400 = <Response [400]>.status_code
+
+tests/e2e/test_fastapi_calculator.py:33: AssertionError
+_____________________________________________ test_create_calculation_division _____________________________________________
+
+base_url = 'http://127.0.0.1:62255'
+
+    def test_create_calculation_division(base_url: str):
+        user_data = {
+            "first_name": "Calc",
+            "last_name": "Divider",
+            "email": f"calc.div{uuid4()}@example.com",
+            "username": f"calc_div_{uuid4()}",
+            "password": "SecurePass123!",
+            "confirm_password": "SecurePass123!"
+        }
+>       token_data = register_and_login(base_url, user_data)
+
+tests/e2e/test_fastapi_calculator.py:217: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+base_url = 'http://127.0.0.1:62255'
+user_data = {'confirm_password': 'SecurePass123!', 'email': 'calc.divf3073b1f-537c-442f-9ab9-f2b429d3f1fe@example.com', 'first_name': 'Calc', 'last_name': 'Divider', ...}
+
+    def register_and_login(base_url: str, user_data: dict) -> dict:
+        """
+        Registers a new user and logs in, returning the token response data.
+        """
+        reg_url = f"{base_url}/auth/register"
+        login_url = f"{base_url}/auth/login"
+    
+        reg_response = requests.post(reg_url, json=user_data)
+>       assert reg_response.status_code == 201, f"User registration failed: {reg_response.text}"
+E       AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])"}
+E       assert 400 == 201
+E        +  where 400 = <Response [400]>.status_code
+
+tests/e2e/test_fastapi_calculator.py:33: AssertionError
+_________________________________________ test_list_get_update_delete_calculation __________________________________________
+
+base_url = 'http://127.0.0.1:62255'
+
+    def test_list_get_update_delete_calculation(base_url: str):
+        user_data = {
+            "first_name": "Calc",
+            "last_name": "CRUD",
+            "email": f"calc.crud{uuid4()}@example.com",
+            "username": f"calc_crud_{uuid4()}",
+            "password": "SecurePass123!",
+            "confirm_password": "SecurePass123!"
+        }
+>       token_data = register_and_login(base_url, user_data)
+
+tests/e2e/test_fastapi_calculator.py:241: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+base_url = 'http://127.0.0.1:62255'
+user_data = {'confirm_password': 'SecurePass123!', 'email': 'calc.crud54639e75-29db-4007-8516-c032b4117431@example.com', 'first_name': 'Calc', 'last_name': 'CRUD', ...}
+
+    def register_and_login(base_url: str, user_data: dict) -> dict:
+        """
+        Registers a new user and logs in, returning the token response data.
+        """
+        reg_url = f"{base_url}/auth/register"
+        login_url = f"{base_url}/auth/login"
+    
+        reg_response = requests.post(reg_url, json=user_data)
+>       assert reg_response.status_code == 201, f"User registration failed: {reg_response.text}"
+E       AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])"}
+E       assert 400 == 201
+E        +  where 400 = <Response [400]>.status_code
+
+tests/e2e/test_fastapi_calculator.py:33: AssertionError
+__________________________________________________ test_password_hashing ___________________________________________________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x11c6fd950>
+fake_user_data = {'email': 'cory40@example.net', 'first_name': 'Scott', 'last_name': 'Stewart', 'password': '$v3k5xll%FI@', ...}
+
+    def test_password_hashing(db_session, fake_user_data):
+        """Test password hashing and verification functionality"""
+        original_password = "TestPass123"  # Use known password for test
+>       hashed = User.hash_password(original_password)
+
+tests/integration/test_user_auth.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/models/user.py:100: in hash_password
+    return get_password_hash(password)
+app/auth/jwt.py:35: in get_password_hash
+    return pwd_context.hash(password)
+venv/lib/python3.11/site-packages/passlib/context.py:2258: in hash
+    return record.hash(secret, **kwds)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:779: in hash
+    self.checksum = self._calc_checksum(secret)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:591: in _calc_checksum
+    self._stub_requires_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2254: in _stub_requires_backend
+    cls.set_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2156: in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2163: in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2188: in set_backend
+    cls._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2311: in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2224: in _set_backend
+    ok = loader(**kwds)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:626: in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:421: in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:380: in detect_wrap_bug
+    if verify(secret, bug_hash):
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:792: in verify
+    return consteq(self._calc_checksum(secret), chk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <passlib.handlers.bcrypt._BcryptBackend object at 0x11ca45150>
+secret = b'01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345...7890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234'
+
+    def _calc_checksum(self, secret):
+        # bcrypt behavior:
+        #   secret must be bytes
+        #   config must be ascii bytes
+        #   returns ascii bytes
+        secret, ident = self._prepare_digest_args(secret)
+        config = self._get_config(ident)
+        if isinstance(config, unicode):
+            config = config.encode("ascii")
+>       hash = _bcrypt.hashpw(secret, config)
+E       ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:655: ValueError
+--------------------------------------------------- Captured stderr call ---------------------------------------------------
+2025-11-20 15:08:58,940 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+---------------------------------------------------- Captured log call -----------------------------------------------------
+WARNING  passlib.handlers.bcrypt:bcrypt.py:622 (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+__________________________________________________ test_user_registration __________________________________________________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x11d93eb50>
+fake_user_data = {'email': 'figueroaandrew@example.com', 'first_name': 'Lori', 'last_name': 'Kelly', 'password': 'TestPass123', ...}
+
+    def test_user_registration(db_session, fake_user_data):
+        """Test user registration process"""
+        fake_user_data['password'] = "TestPass123"
+    
+>       user = User.register(db_session, fake_user_data)
+
+tests/integration/test_user_auth.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/models/user.py:129: in register
+    hashed_password = cls.hash_password(password)
+app/models/user.py:100: in hash_password
+    return get_password_hash(password)
+app/auth/jwt.py:35: in get_password_hash
+    return pwd_context.hash(password)
+venv/lib/python3.11/site-packages/passlib/context.py:2258: in hash
+    return record.hash(secret, **kwds)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:779: in hash
+    self.checksum = self._calc_checksum(secret)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:591: in _calc_checksum
+    self._stub_requires_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2254: in _stub_requires_backend
+    cls.set_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2156: in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2163: in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2188: in set_backend
+    cls._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2311: in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2224: in _set_backend
+    ok = loader(**kwds)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:626: in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:421: in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:380: in detect_wrap_bug
+    if verify(secret, bug_hash):
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:792: in verify
+    return consteq(self._calc_checksum(secret), chk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <passlib.handlers.bcrypt._BcryptBackend object at 0x11d93f110>
+secret = b'01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345...7890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234'
+
+    def _calc_checksum(self, secret):
+        # bcrypt behavior:
+        #   secret must be bytes
+        #   config must be ascii bytes
+        #   returns ascii bytes
+        secret, ident = self._prepare_digest_args(secret)
+        config = self._get_config(ident)
+        if isinstance(config, unicode):
+            config = config.encode("ascii")
+>       hash = _bcrypt.hashpw(secret, config)
+E       ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:655: ValueError
+--------------------------------------------------- Captured stderr call ---------------------------------------------------
+2025-11-20 15:08:59,129 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+---------------------------------------------------- Captured log call -----------------------------------------------------
+WARNING  passlib.handlers.bcrypt:bcrypt.py:622 (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+_____________________________________________ test_duplicate_user_registration _____________________________________________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x11cfd0c50>
+
+    def test_duplicate_user_registration(db_session):
+        """Test registration with duplicate email/username"""
+        # First user data
+        user1_data = {
+            "first_name": "Test",
+            "last_name": "User1",
+            "email": "unique.test@example.com",
+            "username": "uniqueuser1",
+            "password": "TestPass123"
+        }
+    
+        # Second user data with same email
+        user2_data = {
+            "first_name": "Test",
+            "last_name": "User2",
+            "email": "unique.test@example.com",  # Same email
+            "username": "uniqueuser2",
+            "password": "TestPass123"
+        }
+    
+        # Register first user
+>       first_user = User.register(db_session, user1_data)
+
+tests/integration/test_user_auth.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/models/user.py:129: in register
+    hashed_password = cls.hash_password(password)
+app/models/user.py:100: in hash_password
+    return get_password_hash(password)
+app/auth/jwt.py:35: in get_password_hash
+    return pwd_context.hash(password)
+venv/lib/python3.11/site-packages/passlib/context.py:2258: in hash
+    return record.hash(secret, **kwds)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:779: in hash
+    self.checksum = self._calc_checksum(secret)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:591: in _calc_checksum
+    self._stub_requires_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2254: in _stub_requires_backend
+    cls.set_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2156: in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2163: in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2188: in set_backend
+    cls._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2311: in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2224: in _set_backend
+    ok = loader(**kwds)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:626: in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:421: in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:380: in detect_wrap_bug
+    if verify(secret, bug_hash):
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:792: in verify
+    return consteq(self._calc_checksum(secret), chk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <passlib.handlers.bcrypt._BcryptBackend object at 0x11cfd1cd0>
+secret = b'01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345...7890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234'
+
+    def _calc_checksum(self, secret):
+        # bcrypt behavior:
+        #   secret must be bytes
+        #   config must be ascii bytes
+        #   returns ascii bytes
+        secret, ident = self._prepare_digest_args(secret)
+        config = self._get_config(ident)
+        if isinstance(config, unicode):
+            config = config.encode("ascii")
+>       hash = _bcrypt.hashpw(secret, config)
+E       ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:655: ValueError
+--------------------------------------------------- Captured stderr call ---------------------------------------------------
+2025-11-20 15:08:59,320 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+---------------------------------------------------- Captured log call -----------------------------------------------------
+WARNING  passlib.handlers.bcrypt:bcrypt.py:622 (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+_________________________________________________ test_user_authentication _________________________________________________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x11c6daf90>
+fake_user_data = {'email': 'holmesmiguel@example.com', 'first_name': 'Sharon', 'last_name': 'Scott', 'password': 'TestPass123', ...}
+
+    def test_user_authentication(db_session, fake_user_data):
+        """Test user authentication and token generation"""
+        # Use fake_user_data from fixture
+        fake_user_data['password'] = "TestPass123"
+>       user = User.register(db_session, fake_user_data)
+
+tests/integration/test_user_auth.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/models/user.py:129: in register
+    hashed_password = cls.hash_password(password)
+app/models/user.py:100: in hash_password
+    return get_password_hash(password)
+app/auth/jwt.py:35: in get_password_hash
+    return pwd_context.hash(password)
+venv/lib/python3.11/site-packages/passlib/context.py:2258: in hash
+    return record.hash(secret, **kwds)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:779: in hash
+    self.checksum = self._calc_checksum(secret)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:591: in _calc_checksum
+    self._stub_requires_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2254: in _stub_requires_backend
+    cls.set_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2156: in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2163: in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2188: in set_backend
+    cls._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2311: in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2224: in _set_backend
+    ok = loader(**kwds)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:626: in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:421: in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:380: in detect_wrap_bug
+    if verify(secret, bug_hash):
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:792: in verify
+    return consteq(self._calc_checksum(secret), chk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <passlib.handlers.bcrypt._BcryptBackend object at 0x11cf999d0>
+secret = b'01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345...7890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234'
+
+    def _calc_checksum(self, secret):
+        # bcrypt behavior:
+        #   secret must be bytes
+        #   config must be ascii bytes
+        #   returns ascii bytes
+        secret, ident = self._prepare_digest_args(secret)
+        config = self._get_config(ident)
+        if isinstance(config, unicode):
+            config = config.encode("ascii")
+>       hash = _bcrypt.hashpw(secret, config)
+E       ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:655: ValueError
+--------------------------------------------------- Captured stderr call ---------------------------------------------------
+2025-11-20 15:08:59,537 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+---------------------------------------------------- Captured log call -----------------------------------------------------
+WARNING  passlib.handlers.bcrypt:bcrypt.py:622 (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+_______________________________________________ test_user_last_login_update ________________________________________________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x11c6fe690>
+fake_user_data = {'email': 'john15@example.net', 'first_name': 'Dana', 'last_name': 'Simmons', 'password': 'TestPass123', ...}
+
+    def test_user_last_login_update(db_session, fake_user_data):
+        """Test that last_login is updated on authentication"""
+        fake_user_data['password'] = "TestPass123"
+>       user = User.register(db_session, fake_user_data)
+
+tests/integration/test_user_auth.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/models/user.py:129: in register
+    hashed_password = cls.hash_password(password)
+app/models/user.py:100: in hash_password
+    return get_password_hash(password)
+app/auth/jwt.py:35: in get_password_hash
+    return pwd_context.hash(password)
+venv/lib/python3.11/site-packages/passlib/context.py:2258: in hash
+    return record.hash(secret, **kwds)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:779: in hash
+    self.checksum = self._calc_checksum(secret)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:591: in _calc_checksum
+    self._stub_requires_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2254: in _stub_requires_backend
+    cls.set_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2156: in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2163: in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2188: in set_backend
+    cls._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2311: in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2224: in _set_backend
+    ok = loader(**kwds)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:626: in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:421: in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:380: in detect_wrap_bug
+    if verify(secret, bug_hash):
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:792: in verify
+    return consteq(self._calc_checksum(secret), chk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <passlib.handlers.bcrypt._BcryptBackend object at 0x11ce40a90>
+secret = b'01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345...7890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234'
+
+    def _calc_checksum(self, secret):
+        # bcrypt behavior:
+        #   secret must be bytes
+        #   config must be ascii bytes
+        #   returns ascii bytes
+        secret, ident = self._prepare_digest_args(secret)
+        config = self._get_config(ident)
+        if isinstance(config, unicode):
+            config = config.encode("ascii")
+>       hash = _bcrypt.hashpw(secret, config)
+E       ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:655: ValueError
+--------------------------------------------------- Captured stderr call ---------------------------------------------------
+2025-11-20 15:08:59,727 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+---------------------------------------------------- Captured log call -----------------------------------------------------
+WARNING  passlib.handlers.bcrypt:bcrypt.py:622 (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+________________________________________________ test_unique_email_username ________________________________________________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x11ce4ef90>
+
+    def test_unique_email_username(db_session):
+        """Test uniqueness constraints for email and username"""
+        # Create first user with specific test data
+        user1_data = {
+            "first_name": "Test",
+            "last_name": "User1",
+            "email": "unique_test@example.com",
+            "username": "uniqueuser",
+            "password": "TestPass123"
+        }
+    
+        # Register and commit first user
+>       User.register(db_session, user1_data)
+
+tests/integration/test_user_auth.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/models/user.py:129: in register
+    hashed_password = cls.hash_password(password)
+app/models/user.py:100: in hash_password
+    return get_password_hash(password)
+app/auth/jwt.py:35: in get_password_hash
+    return pwd_context.hash(password)
+venv/lib/python3.11/site-packages/passlib/context.py:2258: in hash
+    return record.hash(secret, **kwds)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:779: in hash
+    self.checksum = self._calc_checksum(secret)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:591: in _calc_checksum
+    self._stub_requires_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2254: in _stub_requires_backend
+    cls.set_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2156: in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2163: in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2188: in set_backend
+    cls._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2311: in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2224: in _set_backend
+    ok = loader(**kwds)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:626: in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:421: in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:380: in detect_wrap_bug
+    if verify(secret, bug_hash):
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:792: in verify
+    return consteq(self._calc_checksum(secret), chk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <passlib.handlers.bcrypt._BcryptBackend object at 0x11ce4f010>
+secret = b'01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345...7890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234'
+
+    def _calc_checksum(self, secret):
+        # bcrypt behavior:
+        #   secret must be bytes
+        #   config must be ascii bytes
+        #   returns ascii bytes
+        secret, ident = self._prepare_digest_args(secret)
+        config = self._get_config(ident)
+        if isinstance(config, unicode):
+            config = config.encode("ascii")
+>       hash = _bcrypt.hashpw(secret, config)
+E       ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:655: ValueError
+--------------------------------------------------- Captured stderr call ---------------------------------------------------
+2025-11-20 15:08:59,900 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+---------------------------------------------------- Captured log call -----------------------------------------------------
+WARNING  passlib.handlers.bcrypt:bcrypt.py:622 (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+___________________________________________ test_token_creation_and_verification ___________________________________________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x11dc85190>
+fake_user_data = {'email': 'gregorythompson@example.org', 'first_name': 'Rebecca', 'last_name': 'Downs', 'password': 'TestPass123', ...}
+
+    def test_token_creation_and_verification(db_session, fake_user_data):
+        """Test token creation and verification"""
+        fake_user_data['password'] = "TestPass123"
+>       user = User.register(db_session, fake_user_data)
+
+tests/integration/test_user_auth.py:153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/models/user.py:129: in register
+    hashed_password = cls.hash_password(password)
+app/models/user.py:100: in hash_password
+    return get_password_hash(password)
+app/auth/jwt.py:35: in get_password_hash
+    return pwd_context.hash(password)
+venv/lib/python3.11/site-packages/passlib/context.py:2258: in hash
+    return record.hash(secret, **kwds)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:779: in hash
+    self.checksum = self._calc_checksum(secret)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:591: in _calc_checksum
+    self._stub_requires_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2254: in _stub_requires_backend
+    cls.set_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2156: in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2163: in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2188: in set_backend
+    cls._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2311: in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2224: in _set_backend
+    ok = loader(**kwds)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:626: in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:421: in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:380: in detect_wrap_bug
+    if verify(secret, bug_hash):
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:792: in verify
+    return consteq(self._calc_checksum(secret), chk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <passlib.handlers.bcrypt._BcryptBackend object at 0x11dc861d0>
+secret = b'01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345...7890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234'
+
+    def _calc_checksum(self, secret):
+        # bcrypt behavior:
+        #   secret must be bytes
+        #   config must be ascii bytes
+        #   returns ascii bytes
+        secret, ident = self._prepare_digest_args(secret)
+        config = self._get_config(ident)
+        if isinstance(config, unicode):
+            config = config.encode("ascii")
+>       hash = _bcrypt.hashpw(secret, config)
+E       ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:655: ValueError
+--------------------------------------------------- Captured stderr call ---------------------------------------------------
+2025-11-20 15:09:00,089 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+---------------------------------------------------- Captured log call -----------------------------------------------------
+WARNING  passlib.handlers.bcrypt:bcrypt.py:622 (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+_______________________________________________ test_authenticate_with_email _______________________________________________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x11ce96ad0>
+fake_user_data = {'email': 'afarrell@example.org', 'first_name': 'Donna', 'last_name': 'Schultz', 'password': 'TestPass123', ...}
+
+    def test_authenticate_with_email(db_session, fake_user_data):
+        """Test authentication using email instead of username"""
+        fake_user_data['password'] = "TestPass123"
+>       user = User.register(db_session, fake_user_data)
+
+tests/integration/test_user_auth.py:166: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/models/user.py:129: in register
+    hashed_password = cls.hash_password(password)
+app/models/user.py:100: in hash_password
+    return get_password_hash(password)
+app/auth/jwt.py:35: in get_password_hash
+    return pwd_context.hash(password)
+venv/lib/python3.11/site-packages/passlib/context.py:2258: in hash
+    return record.hash(secret, **kwds)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:779: in hash
+    self.checksum = self._calc_checksum(secret)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:591: in _calc_checksum
+    self._stub_requires_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2254: in _stub_requires_backend
+    cls.set_backend()
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2156: in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2163: in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2188: in set_backend
+    cls._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2311: in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:2224: in _set_backend
+    ok = loader(**kwds)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:626: in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:421: in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:380: in detect_wrap_bug
+    if verify(secret, bug_hash):
+venv/lib/python3.11/site-packages/passlib/utils/handlers.py:792: in verify
+    return consteq(self._calc_checksum(secret), chk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <passlib.handlers.bcrypt._BcryptBackend object at 0x11ce97010>
+secret = b'01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345...7890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234'
+
+    def _calc_checksum(self, secret):
+        # bcrypt behavior:
+        #   secret must be bytes
+        #   config must be ascii bytes
+        #   returns ascii bytes
+        secret, ident = self._prepare_digest_args(secret)
+        config = self._get_config(ident)
+        if isinstance(config, unicode):
+            config = config.encode("ascii")
+>       hash = _bcrypt.hashpw(secret, config)
+E       ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+
+venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py:655: ValueError
+--------------------------------------------------- Captured stderr call ---------------------------------------------------
+2025-11-20 15:09:00,275 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+---------------------------------------------------- Captured log call -----------------------------------------------------
+WARNING  passlib.handlers.bcrypt:bcrypt.py:622 (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+
+---------- coverage: platform darwin, python 3.11.9-final-0 ----------
+Name                         Stmts   Miss  Cover   Missing
+----------------------------------------------------------
+app/__init__.py                  0      0   100%
+app/auth/__init__.py             0      0   100%
+app/auth/dependencies.py        28      4    86%   37, 52-65
+app/auth/jwt.py                 60     37    38%   31, 45-77, 90-127, 141-161
+app/auth/redis.py               16      8    50%   10-15, 19-20, 24-25
+app/core/__init__.py             0      0   100%
+app/core/config.py              20      0   100%
+app/database.py                 17      4    76%   16-20
+app/database_init.py             7      0   100%
+app/main.py                    119    119     0%   1-255
+app/models/__init__.py           0      0   100%
+app/models/calculation.py       92      7    92%   95, 98, 116, 125, 139, 141, 153
+app/models/user.py              94     34    64%   48, 65-68, 73, 85-86, 126, 130-140, 155-171, 190-192, 205-207, 224-230
+app/operations/__init__.py      16      0   100%
+app/schemas/__init__.py          4      0   100%
+app/schemas/base.py             24      0   100%
+app/schemas/calculation.py      53      4    92%   47, 50-51, 95
+app/schemas/token.py            32      0   100%
+app/schemas/user.py             66     20    70%   53-55, 60-71, 184-188
+----------------------------------------------------------
+TOTAL                          648    237    63%
+Coverage HTML written to dir htmlcov
+
+================================================= short test summary info ==================================================
+FAILED tests/e2e/test_fastapi_calculator.py::test_user_registration - AssertionError: Expected 201 but got 400. Response: {"detail":"password cannot be longer than 72 bytes, truncate manual...
+FAILED tests/e2e/test_fastapi_calculator.py::test_user_login - AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if nece...
+FAILED tests/e2e/test_fastapi_calculator.py::test_create_calculation_addition - AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if nece...
+FAILED tests/e2e/test_fastapi_calculator.py::test_create_calculation_subtraction - AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if nece...
+FAILED tests/e2e/test_fastapi_calculator.py::test_create_calculation_multiplication - AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if nece...
+FAILED tests/e2e/test_fastapi_calculator.py::test_create_calculation_division - AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if nece...
+FAILED tests/e2e/test_fastapi_calculator.py::test_list_get_update_delete_calculation - AssertionError: User registration failed: {"detail":"password cannot be longer than 72 bytes, truncate manually if nece...
+FAILED tests/integration/test_user_auth.py::test_password_hashing - ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+FAILED tests/integration/test_user_auth.py::test_user_registration - ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+FAILED tests/integration/test_user_auth.py::test_duplicate_user_registration - ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+FAILED tests/integration/test_user_auth.py::test_user_authentication - ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+FAILED tests/integration/test_user_auth.py::test_user_last_login_update - ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+FAILED tests/integration/test_user_auth.py::test_unique_email_username - ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+FAILED tests/integration/test_user_auth.py::test_token_creation_and_verification - ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+FAILED tests/integration/test_user_auth.py::test_authenticate_with_email - ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+========================================= 15 failed, 84 passed, 1 skipped in 5.26s =========================================
+(venv) Mac:assignment12 danatryon$ 

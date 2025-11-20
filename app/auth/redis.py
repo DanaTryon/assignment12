@@ -1,14 +1,17 @@
 # app/auth/redis.py
-import aioredis
+import asyncio
+import redis.asyncio as aioredis
 from app.core.config import get_settings
 
 settings = get_settings()
+_redis_lock = asyncio.Lock()
 
 async def get_redis():
-    if not hasattr(get_redis, "redis"):
-        get_redis.redis = await aioredis.from_url(
-            settings.REDIS_URL or "redis://localhost"
-        )
+    async with _redis_lock:
+        if not hasattr(get_redis, "redis"):
+            get_redis.redis = aioredis.from_url(
+                settings.REDIS_URL or "redis://localhost"
+            )
     return get_redis.redis
 
 async def add_to_blacklist(jti: str, exp: int):
