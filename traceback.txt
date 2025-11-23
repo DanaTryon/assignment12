@@ -1,136 +1,169 @@
-(venv) Mac:assignment12 danatryon$ pytest --cov=app/auth/jwt.py
-========================================== test session starts ===========================================
-platform darwin -- Python 3.11.9, pytest-8.3.4, pluggy-1.5.0
-rootdir: /Users/danatryon/projects/assignment12
-configfile: pytest.ini
-testpaths: tests
-plugins: cov-6.0.0, Faker-36.1.0, anyio-4.8.0
-collected 132 items                                                                                      
+(venv) Mac:assignment12 danatryon$ docker compose up -d --build
+[+] Building 7.3s (13/15)                                                                   
+ => [internal] load local bake definitions                                             0.0s
+ => => reading from stdin 527B                                                         0.0s
+ => [internal] load build definition from Dockerfile                                   0.0s
+ => => transferring dockerfile: 1.13kB                                                 0.0s
+ => [internal] load metadata for docker.io/library/python:3.11-slim                    0.6s
+ => [auth] library/python:pull token for registry-1.docker.io                          0.0s
+ => [internal] load .dockerignore                                                      0.0s
+ => => transferring context: 2B                                                        0.0s
+ => [1/9] FROM docker.io/library/python:3.11-slim@sha256:193fdd0bbcb3d2ae612bd6cc3548  0.0s
+ => => resolve docker.io/library/python:3.11-slim@sha256:193fdd0bbcb3d2ae612bd6cc3548  0.0s
+ => [internal] load build context                                                      0.5s
+ => => transferring context: 9.08MB                                                    0.5s
+ => CACHED [2/9] WORKDIR /app                                                          0.0s
+ => CACHED [3/9] RUN apt-get update &&     apt-get upgrade -y &&     apt-get install   0.0s
+ => CACHED [4/9] RUN python -m pip install --upgrade pip setuptools>=70.0.0 wheel      0.0s
+ => CACHED [5/9] RUN groupadd -r appgroup &&     useradd -r -g appgroup appuser        0.0s
+ => [6/9] COPY requirements.txt .                                                      0.1s
+ => ERROR [7/9] RUN pip install --no-cache-dir -r requirements.txt                     5.8s
+------                                                                                      
+ > [7/9] RUN pip install --no-cache-dir -r requirements.txt:                                
+0.776 Collecting redis>=4.6.0 (from redis[asyncio]>=4.6.0->-r requirements.txt (line 1))    
+0.883   Downloading redis-7.1.0-py3-none-any.whl.metadata (12 kB)                           
+0.905 Collecting annotated-types==0.7.0 (from -r requirements.txt (line 2))                 
+0.933   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+0.961 Collecting anyio==4.8.0 (from -r requirements.txt (line 3))
+0.986   Downloading anyio-4.8.0-py3-none-any.whl.metadata (4.6 kB)
+1.010 Collecting async-timeout==5.0.1 (from -r requirements.txt (line 4))
+1.024   Downloading async_timeout-5.0.1-py3-none-any.whl.metadata (5.1 kB)
+1.085 Collecting bcrypt==4.0.1 (from -r requirements.txt (line 5))
+1.100   Downloading bcrypt-4.0.1-cp36-abi3-manylinux_2_28_aarch64.whl.metadata (9.0 kB)
+1.128 Collecting certifi==2025.1.31 (from -r requirements.txt (line 6))
+1.149   Downloading certifi-2025.1.31-py3-none-any.whl.metadata (2.5 kB)
+1.270 Collecting cffi==1.17.1 (from -r requirements.txt (line 7))
+1.293   Downloading cffi-1.17.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (1.5 kB)
+1.371 Collecting charset-normalizer==3.4.1 (from -r requirements.txt (line 8))
+1.390   Downloading charset_normalizer-3.4.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (35 kB)
+1.420 Collecting click==8.1.8 (from -r requirements.txt (line 9))
+1.433   Downloading click-8.1.8-py3-none-any.whl.metadata (2.3 kB)
+1.777 Collecting coverage==7.6.11 (from -r requirements.txt (line 10))
+1.804   Downloading coverage-7.6.11-py3-none-any.whl.metadata (8.5 kB)
+1.987 Collecting cryptography==44.0.0 (from -r requirements.txt (line 11))
+2.021   Downloading cryptography-44.0.0-cp39-abi3-manylinux_2_34_aarch64.whl.metadata (5.7 kB)
+2.040 Collecting dnspython==2.7.0 (from -r requirements.txt (line 12))
+2.075   Downloading dnspython-2.7.0-py3-none-any.whl.metadata (5.8 kB)
+2.095 Collecting ecdsa==0.19.0 (from -r requirements.txt (line 13))
+2.125   Downloading ecdsa-0.19.0-py2.py3-none-any.whl.metadata (29 kB)
+2.149 Collecting email_validator==2.2.0 (from -r requirements.txt (line 14))
+2.164   Downloading email_validator-2.2.0-py3-none-any.whl.metadata (25 kB)
+2.191 Collecting exceptiongroup==1.2.2 (from -r requirements.txt (line 15))
+2.213   Downloading exceptiongroup-1.2.2-py3-none-any.whl.metadata (6.6 kB)
+2.281 Collecting Faker==36.1.0 (from -r requirements.txt (line 16))
+2.302   Downloading Faker-36.1.0-py3-none-any.whl.metadata (15 kB)
+2.363 Collecting fastapi==0.115.8 (from -r requirements.txt (line 17))
+2.384   Downloading fastapi-0.115.8-py3-none-any.whl.metadata (27 kB)
+2.518 Collecting greenlet==3.1.1 (from -r requirements.txt (line 18))
+2.538   Downloading greenlet-3.1.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (3.8 kB)
+2.555 Collecting h11==0.16.0 (from -r requirements.txt (line 19))
+2.573   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+2.596 Collecting httpcore==1.0.7 (from -r requirements.txt (line 20))
+2.618   Downloading httpcore-1.0.7-py3-none-any.whl.metadata (21 kB)
+2.644 Collecting httpx==0.28.1 (from -r requirements.txt (line 21))
+2.657   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+2.679 Collecting idna==3.10 (from -r requirements.txt (line 22))
+2.692   Downloading idna-3.10-py3-none-any.whl.metadata (10 kB)
+2.711 Collecting iniconfig==2.0.0 (from -r requirements.txt (line 23))
+2.859   Downloading iniconfig-2.0.0-py3-none-any.whl.metadata (2.6 kB)
+2.890 Collecting jinja2 (from -r requirements.txt (line 24))
+2.908   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+2.932 Collecting packaging==24.2 (from -r requirements.txt (line 25))
+2.946   Downloading packaging-24.2-py3-none-any.whl.metadata (3.2 kB)
+2.968 Collecting passlib==1.7.4 (from -r requirements.txt (line 26))
+2.984   Downloading passlib-1.7.4-py2.py3-none-any.whl.metadata (1.7 kB)
+3.041 Collecting playwright==1.50.0 (from -r requirements.txt (line 27))
+3.069   Downloading playwright-1.50.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (3.5 kB)
+3.103 Collecting pluggy==1.5.0 (from -r requirements.txt (line 28))
+3.117   Downloading pluggy-1.5.0-py3-none-any.whl.metadata (4.8 kB)
+3.189 Collecting psycopg2-binary==2.9.10 (from -r requirements.txt (line 29))
+3.205   Downloading psycopg2_binary-2.9.10-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.9 kB)
+3.236 Collecting pyasn1==0.6.1 (from -r requirements.txt (line 30))
+3.248   Downloading pyasn1-0.6.1-py3-none-any.whl.metadata (8.4 kB)
+3.265 Collecting pycparser==2.22 (from -r requirements.txt (line 31))
+3.277   Downloading pycparser-2.22-py3-none-any.whl.metadata (943 bytes)
+3.384 Collecting pydantic==2.10.6 (from -r requirements.txt (line 32))
+3.520   Downloading pydantic-2.10.6-py3-none-any.whl.metadata (30 kB)
+3.546 Collecting pydantic-settings==2.7.1 (from -r requirements.txt (line 33))
+3.571   Downloading pydantic_settings-2.7.1-py3-none-any.whl.metadata (3.5 kB)
+4.202 Collecting pydantic_core==2.27.2 (from -r requirements.txt (line 34))
+4.239   Downloading pydantic_core-2.27.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (6.6 kB)
+4.261 Collecting pyee==12.1.1 (from -r requirements.txt (line 35))
+4.281   Downloading pyee-12.1.1-py3-none-any.whl.metadata (2.9 kB)
+4.340 Collecting pytest==8.3.4 (from -r requirements.txt (line 36))
+4.360   Downloading pytest-8.3.4-py3-none-any.whl.metadata (7.5 kB)
+4.407 Collecting pytest-cov==6.0.0 (from -r requirements.txt (line 37))
+4.428   Downloading pytest_cov-6.0.0-py3-none-any.whl.metadata (27 kB)
+4.455 Collecting pytest-cover==3.0.0 (from -r requirements.txt (line 38))
+4.469   Downloading pytest_cover-3.0.0-py2.py3-none-any.whl.metadata (2.7 kB)
+4.489 Collecting pytest-coverage==0.0 (from -r requirements.txt (line 39))
+4.504   Downloading pytest_coverage-0.0-py2.py3-none-any.whl.metadata (380 bytes)
+4.530 Collecting python-dotenv==1.0.1 (from -r requirements.txt (line 40))
+4.545   Downloading python_dotenv-1.0.1-py3-none-any.whl.metadata (23 kB)
+4.573 Collecting python-jose==3.4.0 (from -r requirements.txt (line 41))
+4.599   Downloading python_jose-3.4.0-py2.py3-none-any.whl.metadata (5.5 kB)
+4.625 Collecting python-multipart==0.0.20 (from -r requirements.txt (line 42))
+4.641   Downloading python_multipart-0.0.20-py3-none-any.whl.metadata (1.8 kB)
+4.672 Collecting requests==2.32.3 (from -r requirements.txt (line 43))
+4.687   Downloading requests-2.32.3-py3-none-any.whl.metadata (4.6 kB)
+4.710 Collecting rsa==4.9 (from -r requirements.txt (line 44))
+4.731   Downloading rsa-4.9-py3-none-any.whl.metadata (4.2 kB)
+4.750 Collecting six==1.17.0 (from -r requirements.txt (line 45))
+4.763   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+4.787 Collecting sniffio==1.3.1 (from -r requirements.txt (line 46))
+4.801   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+5.072 Collecting SQLAlchemy==2.0.38 (from -r requirements.txt (line 47))
+5.085   Downloading SQLAlchemy-2.0.38-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (9.6 kB)
+5.115 Collecting starlette==0.49.1 (from -r requirements.txt (line 48))
+5.133   Downloading starlette-0.49.1-py3-none-any.whl.metadata (6.4 kB)
+5.158 Collecting tenacity==9.0.0 (from -r requirements.txt (line 49))
+5.171   Downloading tenacity-9.0.0-py3-none-any.whl.metadata (1.2 kB)
+5.231 Collecting tomli==2.2.1 (from -r requirements.txt (line 50))
+5.252   Downloading tomli-2.2.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (11 kB)
+5.276 Collecting typing_extensions==4.12.2 (from -r requirements.txt (line 51))
+5.297   Downloading typing_extensions-4.12.2-py3-none-any.whl.metadata (3.0 kB)
+5.319 Collecting tzdata==2025.1 (from -r requirements.txt (line 52))
+5.339   Downloading tzdata-2025.1-py2.py3-none-any.whl.metadata (1.4 kB)
+5.371 Collecting urllib3==2.3.0 (from -r requirements.txt (line 53))
+5.383   Downloading urllib3-2.3.0-py3-none-any.whl.metadata (6.5 kB)
+5.417 Collecting uvicorn==0.34.0 (from -r requirements.txt (line 54))
+5.430   Downloading uvicorn-0.34.0-py3-none-any.whl.metadata (6.5 kB)
+5.453 INFO: pip is looking at multiple versions of fastapi to determine which version is compatible with other requirements. This could take a while.
+5.457 ERROR: Cannot install -r requirements.txt (line 17) and starlette==0.49.1 because these package versions have conflicting dependencies.
+5.457 
+5.457 The conflict is caused by:
+5.457     The user requested starlette==0.49.1
+5.457     fastapi 0.115.8 depends on starlette<0.46.0 and >=0.40.0
+5.457 
+5.457 Additionally, some packages in these conflicts have no matching distributions available for your environment:
+5.457     starlette
+5.457 
+5.457 To fix this you could try to:
+5.457 1. loosen the range of package versions you've specified
+5.457 2. remove package versions to allow pip to attempt to solve the dependency conflict
+5.457 
+5.540 ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+------
+Dockerfile:24
 
-tests/e2e/test_fastapi_calculator.py ............                                                  [  9%]
-tests/integration/test_calculation.py .............                                                [ 18%]
-tests/integration/test_calculation_schema.py ........                                              [ 25%]
-tests/integration/test_database.py ....                                                            [ 28%]
-tests/integration/test_dependencies.py .......                                                     [ 33%]
-tests/integration/test_main.py ......................                                              [ 50%]
-tests/integration/test_schema_base.py ............                                                 [ 59%]
-tests/integration/test_user.py ........s....                                                       [ 68%]
-tests/integration/test_user_auth.py ............                                                   [ 78%]
-tests/unit/test_calculator.py .....................                                                [ 93%]
-tests/unit/test_dependencies_routest.py ..                                                         [ 95%]
-tests/unit/test_jwt.py ...FF./Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/coverage/inorout.py:508: CoverageWarning: Module app/auth/jwt.py was never imported. (module-not-imported)
-  self.warn(f"Module {pkg} was never imported.", slug="module-not-imported")
-                                                                      [100%]
+--------------------
 
-================================================ FAILURES ================================================
-_______________________________________ test_decode_token_expired ________________________________________
+  22 |     # Copy dependencies and install them
 
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1081ef710>
+  23 |     COPY requirements.txt .
 
-    def test_decode_token_expired(monkeypatch):
-        token = jwt_utils.create_token("user123", TokenType.ACCESS, timedelta(seconds=-1))
-    
-        monkeypatch.setattr(jwt_utils, "is_blacklisted", lambda jti: asyncio.Future())
->       jwt_utils.is_blacklisted(token).set_result(False)
+  24 | >>> RUN pip install --no-cache-dir -r requirements.txt
 
-tests/unit/test_jwt.py:48: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/unit/test_jwt.py:47: in <lambda>
-    monkeypatch.setattr(jwt_utils, "is_blacklisted", lambda jti: asyncio.Future())
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+  25 |     
 
-self = <asyncio.unix_events._UnixDefaultEventLoopPolicy object at 0x108018d50>
+  26 |     # Copy application code
 
-    def get_event_loop(self):
-        """Get the event loop for the current context.
-    
-        Returns an instance of EventLoop or raises an exception.
-        """
-        if (self._local._loop is None and
-                not self._local._set_called and
-                threading.current_thread() is threading.main_thread()):
-            self.set_event_loop(self.new_event_loop())
-    
-        if self._local._loop is None:
->           raise RuntimeError('There is no current event loop in thread %r.'
-                               % threading.current_thread().name)
-E           RuntimeError: There is no current event loop in thread 'MainThread'.
+--------------------
 
-../../.pyenv/versions/3.11.9/lib/python3.11/asyncio/events.py:681: RuntimeError
-______________________________________ test_decode_token_wrong_type ______________________________________
+failed to solve: process "/bin/sh -c pip install --no-cache-dir -r requirements.txt" did not complete successfully: exit code: 1
 
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10817ee50>
 
-    def test_decode_token_wrong_type(monkeypatch):
-        token = jwt_utils.create_token("user123", TokenType.REFRESH)
-    
-        monkeypatch.setattr(jwt_utils, "is_blacklisted", lambda jti: asyncio.Future())
->       jwt_utils.is_blacklisted(token).set_result(False)
 
-tests/unit/test_jwt.py:59: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/unit/test_jwt.py:58: in <lambda>
-    monkeypatch.setattr(jwt_utils, "is_blacklisted", lambda jti: asyncio.Future())
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+View build details: docker-desktop://dashboard/build/default/default/3kvch2d39pfco1cj2rmjly2je
 
-self = <asyncio.unix_events._UnixDefaultEventLoopPolicy object at 0x108018d50>
-
-    def get_event_loop(self):
-        """Get the event loop for the current context.
-    
-        Returns an instance of EventLoop or raises an exception.
-        """
-        if (self._local._loop is None and
-                not self._local._set_called and
-                threading.current_thread() is threading.main_thread()):
-            self.set_event_loop(self.new_event_loop())
-    
-        if self._local._loop is None:
->           raise RuntimeError('There is no current event loop in thread %r.'
-                               % threading.current_thread().name)
-E           RuntimeError: There is no current event loop in thread 'MainThread'.
-
-../../.pyenv/versions/3.11.9/lib/python3.11/asyncio/events.py:681: RuntimeError
-============================================ warnings summary ============================================
-venv/lib/python3.11/site-packages/fastapi/applications.py:1051
-venv/lib/python3.11/site-packages/fastapi/applications.py:1051
-  /Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/fastapi/applications.py:1051: PytestCollectionWarning: cannot collect 'test_app' because it is not a function.
-    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-
-tests/integration/test_main.py::test_register_and_login
-  /Users/danatryon/projects/assignment12/venv/lib/python3.11/site-packages/_pytest/python.py:163: PytestReturnNotNoneWarning: Expected None, but tests/integration/test_main.py::test_register_and_login returned 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMTNmYTg5Mi0xOWM5LTQxZDYtOGFjMS1hZGVjMWFkM2MwNWUiLCJ0eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYzNjkyMDAzLCJpYXQiOjE3NjM2OTAyMDMsImp0aSI6ImU5YTY0YTY4NGZiZmRlYjU5YzY2MjIwZWIwOWQ3YzU0In0.pR1EwR4pNraGUZ30J2HE1cPCywsEPPONvD0RX8X5DOg', which will be an error in a future version of pytest.  Did you mean to use `assert` instead of `return`?
-    warnings.warn(
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-
----------- coverage: platform darwin, python 3.11.9-final-0 ----------
-Name                         Stmts   Miss  Cover   Missing
-----------------------------------------------------------
-app/__init__.py                  0      0   100%
-app/auth/__init__.py             0      0   100%
-app/auth/dependencies.py        28      2    93%   37, 65
-app/auth/jwt.py                 61     20    67%   60, 78-79, 107, 114, 122-129, 143-163
-app/auth/redis.py               16      8    50%   10-15, 19-20, 24-25
-app/core/__init__.py             0      0   100%
-app/core/config.py              20      0   100%
-app/database.py                 17      0   100%
-app/database_init.py             7      0   100%
-app/main.py                    116      0   100%
-app/models/__init__.py           0      0   100%
-app/models/calculation.py       92      7    92%   95, 98, 116, 125, 139, 141, 153
-app/models/user.py              94      9    90%   48, 65-68, 73, 226, 229-230
-app/operations/__init__.py      16      0   100%
-app/schemas/__init__.py          4      0   100%
-app/schemas/base.py             24      0   100%
-app/schemas/calculation.py      53      2    96%   47, 95
-app/schemas/token.py            32      0   100%
-app/schemas/user.py             66     11    83%   54, 62, 64, 66, 68, 70, 184-188
-----------------------------------------------------------
-TOTAL                          646     59    91%
-Coverage HTML written to dir htmlcov
-
-======================================== short test summary info =========================================
-FAILED tests/unit/test_jwt.py::test_decode_token_expired - RuntimeError: There is no current event loop in thread 'MainThread'.
-FAILED tests/unit/test_jwt.py::test_decode_token_wrong_type - RuntimeError: There is no current event loop in thread 'MainThread'.
-========================= 2 failed, 129 passed, 1 skipped, 3 warnings in 17.81s ==========================
 (venv) Mac:assignment12 danatryon$ 
