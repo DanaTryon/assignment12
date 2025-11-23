@@ -3,6 +3,7 @@ import asyncio
 import redis.asyncio as aioredis
 from app.core.config import get_settings
 
+
 settings = get_settings()
 _redis_lock = asyncio.Lock()
 
@@ -23,3 +24,5 @@ async def is_blacklisted(jti: str) -> bool:
     """Check if a token's JTI is blacklisted"""
     redis = await get_redis()
     return await redis.exists(f"blacklist:{jti}")
+
+

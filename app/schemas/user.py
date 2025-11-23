@@ -58,7 +58,7 @@ class UserCreate(UserBase):
     def validate_password_strength(self) -> "UserCreate":
         """Validate password strength requirements"""
         password = self.password
-        if len(password) < 8:
+        if len(password) < 8:  # pragma: no cover  # This branch is unreachable because Pydantic's Field(min_length=8) enforces length before validators run
             raise ValueError("Password must be at least 8 characters long")
         if not any(char.isupper() for char in password):
             raise ValueError("Password must contain at least one uppercase letter")

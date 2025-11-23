@@ -250,6 +250,6 @@ def delete_calculation(
 # ------------------------------------------------------------------------------
 # Main Block to Run the Server
 # ------------------------------------------------------------------------------
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     import uvicorn
     uvicorn.run("app.main:app", host="127.0.0.1", port=8000, log_level="info")
